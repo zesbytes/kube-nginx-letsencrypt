@@ -4,4 +4,4 @@
 
 Obtain and install Let's Encrypt certificates for Kubernetes Ingresses
 
-https://hub.docker.com/r/sjenning/kube-nginx-letsencrypt/
+https://hub.docker.com/r/zesbytes/kube-nginx-letsencrypt
