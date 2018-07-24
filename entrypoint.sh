@@ -1,7 +1,7 @@
 #!/bin/bash
 
-if [[ -z $EMAIL || -z $DOMAINS || -z $SECRET || -z $DEPLOYMENT ]]; then
-	echo "EMAIL, DOMAINS, SECERT, and DEPLOYMENT env vars required"
+if [[ -z $PORT || -z $EMAIL || -z $DOMAINS || -z $SECRET || -z $DEPLOYMENT ]]; then
+	echo "PORT, EMAIL, DOMAINS, SECERT, and DEPLOYMENT env vars required"
 	env
 	exit 1
 fi
@@ -9,7 +9,7 @@ fi
 NAMESPACE=$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace)
 
 cd $HOME
-python -m SimpleHTTPServer 80 &
+python -m SimpleHTTPServer $PORT &
 PID=$!
 certbot certonly --webroot -w $HOME -n --agree-tos --email ${EMAIL} --no-self-upgrade -d ${DOMAINS}
 kill $PID
