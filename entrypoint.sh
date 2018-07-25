@@ -23,7 +23,7 @@ cat secret-patch-template.json | \
 	sed "s/NAME/${SECRET}/" | \
 	sed "s/TLSCERT/$(cat ${CERTPATH}/fullchain.pem | base64 | tr -d '\n')/" | \
 	sed "s/TLSKEY/$(cat ${CERTPATH}/privkey.pem |  base64 | tr -d '\n')/" \
-	> /secret-patch.json
+	> secret-patch.json
 
 ls secret-patch.json || exit 1
 
@@ -34,7 +34,7 @@ cat deployment-patch-template.json | \
 	sed "s/TLSUPDATED/$(date)/" | \
 	sed "s/NAMESPACE/${NAMESPACE}/" | \
 	sed "s/NAME/${DEPLOYMENT}/" \
-	> /deployment-patch.json
+	> deployment-patch.json
 
 ls deployment-patch.json || exit 1
 
