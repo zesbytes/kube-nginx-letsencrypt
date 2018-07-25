@@ -12,4 +12,4 @@ COPY secret-patch-template.json .
 COPY deployment-patch-template.json .
 COPY entrypoint.sh .
 
-CMD ["entrypoint.sh"]
+CMD ["./entrypoint.sh"]
