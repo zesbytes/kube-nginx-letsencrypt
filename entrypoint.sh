@@ -10,7 +10,7 @@ NAMESPACE=$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace)
 
 python -m SimpleHTTPServer $PORT &
 PID=$!
-sleep 30
+sleep 60
 certbot certonly --webroot -w . -n --agree-tos --email ${EMAIL} --no-self-upgrade -d ${DOMAINS}
 kill $PID
 
