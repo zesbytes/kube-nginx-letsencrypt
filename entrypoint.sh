@@ -1,7 +1,7 @@
 #!/bin/bash
 
-if [[ -z $PORT || -z $EMAIL || -z $DOMAINS || -z $SECRET || -z $DEPLOYMENT ]]; then
-	echo "PORT, EMAIL, DOMAINS, SECERT, and DEPLOYMENT env vars required"
+if [[ -z $PORT || -z $EMAIL || -z $DOMAINS || -z $SECRET || -z $DEPLOYMENT || -z $KUBERNETES_DOMAIN ]]; then
+	echo "PORT, EMAIL, DOMAINS, SECERT, DEPLOYMENT and KUBERNETES_DOMAIN env vars required"
 	env
 	exit 1
 fi
@@ -28,7 +28,7 @@ cat secret-patch-template.json | \
 ls secret-patch.json || exit 1
 
 # update secret
-curl -v --cacert /var/run/secrets/kubernetes.io/serviceaccount/ca.crt -H "Authorization: Bearer $(cat /var/run/secrets/kubernetes.io/serviceaccount/token)" -k -v -XPATCH -H "Accept: application/json, */*" -H "Content-Type: application/strategic-merge-patch+json" -d @secret-patch.json https://api.starter-us-west-1.openshift.com/api/v1/namespaces/${NAMESPACE}/secrets/${SECRET}
+curl -v --cacert /var/run/secrets/kubernetes.io/serviceaccount/ca.crt -H "Authorization: Bearer $(cat /var/run/secrets/kubernetes.io/serviceaccount/token)" -k -v -XPATCH -H "Accept: application/json, */*" -H "Content-Type: application/strategic-merge-patch+json" -d @secret-patch.json https://${KUBERNETES_DOMAIN}/api/v1/namespaces/${NAMESPACE}/secrets/${SECRET}
 
 cat deployment-patch-template.json | \
 	sed "s/TLSUPDATED/$(date)/" | \
@@ -39,4 +39,4 @@ cat deployment-patch-template.json | \
 ls deployment-patch.json || exit 1
 
 # update pod spec on ingress deployment to trigger redeploy
-curl -v --cacert /var/run/secrets/kubernetes.io/serviceaccount/ca.crt -H "Authorization: Bearer $(cat /var/run/secrets/kubernetes.io/serviceaccount/token)" -k -v -XPATCH  -H "Accept: application/json, */*" -H "Content-Type: application/strategic-merge-patch+json" -d @deployment-patch.json https://api.starter-us-west-1.openshift.com/apis/extensions/v1beta1/namespaces/${NAMESPACE}/deployments/${DEPLOYMENT}
+curl -v --cacert /var/run/secrets/kubernetes.io/serviceaccount/ca.crt -H "Authorization: Bearer $(cat /var/run/secrets/kubernetes.io/serviceaccount/token)" -k -v -XPATCH  -H "Accept: application/json, */*" -H "Content-Type: application/strategic-merge-patch+json" -d @deployment-patch.json https://${KUBERNETES_DOMAIN}/apis/extensions/v1beta1/namespaces/${NAMESPACE}/deployments/${DEPLOYMENT}
