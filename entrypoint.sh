@@ -1,16 +1,16 @@
 #!/bin/sh
 
-if [ -z $EMAIL ] || [ -z $DOMAIN ] || [ -z $SECRET ] || [ -z $CLOUDFLARE_SECRETS_FILE ] || [ -z $KUBERNETES_API_DOMAIN ]; then
-	echo "EMAIL, DOMAIN, SECRET, CLOUDFLARE_SECRETS_FILE and KUBERNETES_API_DOMAIN env vars required"
+if [ -z $EMAIL ] || [ -z $DOMAINS ] || [ -z $SECRET ] || [ -z $CLOUDFLARE_SECRETS_FILE ] || [ -z $KUBERNETES_API_DOMAIN ]; then
+	echo "EMAIL, DOMAINS, SECRET, CLOUDFLARE_SECRETS_FILE and KUBERNETES_API_DOMAIN env vars required"
 	env
 	exit 1
 fi
 
 NAMESPACE=$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace)
 
-certbot certonly -n --agree-tos --email $EMAIL --no-self-upgrade --dns-cloudflare --dns-cloudflare-credentials $CLOUDFLARE_SECRETS_FILE -d $DOMAIN
+certbot certonly -n --agree-tos --email $EMAIL --no-self-upgrade --dns-cloudflare --dns-cloudflare-credentials $CLOUDFLARE_SECRETS_FILE -d $DOMAINS
 
-CERTPATH=/etc/letsencrypt/live/$(echo $DOMAIN | cut -f1 -d',')
+CERTPATH=/etc/letsencrypt/live/$(echo $DOMAINS | cut -f1 -d',')
 
 ls $CERTPATH || exit 1
 
