@@ -24,4 +24,4 @@ cat secret-patch-template.json | \
 ls secret-patch.json || exit 1
 
 # update secret
-curl -v --cacert /var/run/secrets/kubernetes.io/serviceaccount/ca.crt -H "Authorization: Bearer $(cat /var/run/secrets/kubernetes.io/serviceaccount/token)" -k -v -XPATCH -H "Accept: application/json, */*" -H "Content-Type: application/strategic-merge-patch+json" -d @secret-patch.json https://${KUBERNETES_API_DOMAIN}/api/v1/namespaces/${NAMESPACE}/secrets/${SECRET}
+curl -v --cacert /var/run/secrets/kubernetes.io/serviceaccount/ca.crt -H "Authorization: Bearer $(cat /var/run/secrets/kubernetes.io/serviceaccount/token)" -k -XPATCH -H "Accept: application/json, */*" -H "Content-Type: application/strategic-merge-patch+json" -d @secret-patch.json https://${KUBERNETES_API_DOMAIN}/api/v1/namespaces/${NAMESPACE}/secrets/${SECRET}
