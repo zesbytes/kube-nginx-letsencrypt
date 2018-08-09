@@ -1,6 +1,6 @@
-#!/bin/bash
+#!/bin/sh
 
-if [[-z $EMAIL || -z $DOMAIN || -z $SECRET || -z $CLOUDFLARE_SECRETS_FILE || -z $KUBERNETES_API_DOMAIN ]]; then
+if [ -z $EMAIL ] || [ -z $DOMAIN ] || [ -z $SECRET ] || [ -z $CLOUDFLARE_SECRETS_FILE ] || [ -z $KUBERNETES_API_DOMAIN ]; then
 	echo "EMAIL, DOMAIN, SECRET, CLOUDFLARE_SECRETS_FILE and KUBERNETES_API_DOMAIN env vars required"
 	env
 	exit 1
